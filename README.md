@@ -1,97 +1,137 @@
-## Music-Recommendation-Using-Facial-Expressions
 
-Please give us a ⭐ and fork this repo to get started. Thank you 🙌🙌.
 
-### Project Overview
+# 🎵 Music Recommendation Based on Facial Expression
 
-This project is a Python-based application that uses OpenCV for real-time facial detection and a pre-trained deep learning model (fer2013_mini_XCEPTION.102-0.66.hdf5) to recognize and analyze facial expressions. By capturing live video feed from the user’s webcam, it identifies the user’s emotions—such as happiness, sadness, anger, or neutrality—based on facial cues.
+## Overview
 
-Once the emotion is detected, the application constructs a YouTube search query tailored to the identified mood. Using the webbrowser module, the application automatically opens relevant YouTube search results in the user’s default browser, allowing them to access music that aligns with their current emotional state. The requests library further supports this functionality by enabling API interactions for a smoother YouTube search experience.
+This project explores an end-to-end **computer vision–driven recommendation system** that maps **real-time facial expressions** to music recommendations. The goal is to study how affective signals extracted from visual data can be used as implicit user feedback for personalized media recommendation.
 
-This project combines elements of computer vision and deep learning with web integration to create a personalized and interactive music recommendation system. It demonstrates the potential of AI-powered emotion detection in real-world applications, where user experience can be enhanced through real-time responsiveness and intelligent content recommendations.
+The system performs **real-time facial emotion recognition** using a webcam feed and recommends music playlists aligned with the detected emotional state.
 
-### Installation
 
-1.  **Clone the Repository:**
-    ```bash
-    git clone https://github.com/SGCODEX/Music-Recommendation-Using-Facial-Expressions.git
-    ```
-2.  **Install Dependencies:**
-    ```bash
-    pip install -r requirements.txt --quiet
-    ```
-    
-### How to Run
 
-1.  **Execute the Script:**
-    ```bash
-    python main_face.py
-    ```
+## Problem Statement
 
-### Tech Stack & Libraries
+Traditional music recommendation systems rely heavily on:
 
-- Python: As the primary programming language for its versatility and extensive libraries.
-- OpenCV: For real-time image and video processing, including facial detection.
-- TensorFlow and Keras: For building and training the deep learning model to recognize facial expressions.
-- fer2013_mini_XCEPTION.102-0.66.hdf5: A pre-trained model for facial emotion recognition.
-- webbrowser: To open web pages, specifically YouTube search results.
-- requests: For making HTTP requests to interact with web APIs (e.g., YouTube search).
+* Explicit user input (likes, skips, ratings), or
+* Historical listening behavior
 
-### How it Works / Usage
+These approaches fail in scenarios where:
 
-1.  **Facial Detection:**
-      - The script captures a video feed from your webcam.
-      - OpenCV is used to detect faces in each frame.
-2.  **Emotion Recognition:**
-      - Detected faces are processed by the trained model.
-      - The model predicts the dominant emotion (e.g., happy, sad, angry, neutral).
-      - Script captures the emotion when we click on the screen, the clicked emotion is stored as current emotion
-3.  **Music Recommendation:**
-      - Based on the predicted emotion, the script constructs a YouTube search query.
-      - The `webbrowser` module opens the search results in your default browser.
+* The user is new (cold start),
+* The user cannot or does not want to provide explicit feedback,
+* Emotional context matters more than long-term preferences.
 
-- [Demo Video](https://www.youtube.com/watch?v=Qj5yUBjSr7I)
+This project investigates whether **facial expressions**, captured passively and in real time, can serve as a proxy for user mood and enable **context-aware music recommendations**.
 
-### Main Features
-**1. Real-time Facial Detection and Emotion Recognition:**
-   - Uses OpenCV to capture live video feed from the user's webcam.
-   - Employs a pre-trained deep learning model (fer2013_mini_XCEPTION.102-0.66.hdf5) to accurately identify facial expressions.
-   - Recognizes a range of emotions, including happiness, sadness, anger, and neutrality.
 
-**2. Emotion-Based YouTube Search and Recommendation:** 
-   - Utilizes the webbrowser module to automatically open relevant search results in the user's default browser.
-   - Leverages the requests library to interact with YouTube's API for a more efficient search process.
-   - Constructs a YouTube search query based on the detected emotion
 
-**3. Intuitive User Interface:**
-   - Provides a simple and user-friendly interface to interact with the application.
-   - Displays the detected emotion in real-time.
-   - Presents a clear visual representation of the search results.
+## Key Contributions
 
-### Customization & Additional Considerations
+* Built a **real-time emotion recognition pipeline** using computer vision.
+* Integrated facial emotion output with a **rule-based music recommendation layer**.
+* Designed a modular pipeline separating:
 
-  - **Model:** Experiment with different pre-trained models or fine-tune the existing one for more accurate emotion recognition.
-  - **Search Queries:** Adjust the search query construction to refine the music recommendations.
-  - **User Interface:** Consider creating a user-friendly GUI / Front end to enhance the experience.
-  - **Privacy:** Be mindful of privacy concerns when capturing and processing facial data.
-  - **Performance:** Optimize the code for real-time performance, especially on resource-constrained devices.
-  - **Error Handling:** Implement robust error handling to gracefully handle exceptions.
+  * Face detection
+  * Emotion inference
+  * Recommendation logic
+* Analyzed system limitations and real-world failure cases.
 
-### Contribution
 
-We welcome contributions to this project. Feel free to fork the repository, make improvements, and submit pull requests.
-We value all contributions, whether it's through code, documentation, creating demos or just spreading the word.
-Here are a few useful resources to help you get started:
-- For contributions, [Check out the contribution guide](https://github.com/SGCODEX/Music-Recommendation-Using-Facial-Expressions/blob/main/CONTRIBUTING.md) .
 
-### PR Template
+## System Architecture
 
-Please submit all PRs in this format: [PR Template](https://github.com/SGCODEX/Music-Recommendation-Using-Facial-Expressions/blob/main/CONTRIBUTING.md#pr-template)
+1. **Video Capture**
 
-### License
+   * Live webcam feed using OpenCV.
 
-This project is licensed under the [MIT License](https://github.com/SGCODEX/Music-Recommendation-Using-Facial-Expressions/blob/main/LICENSE)
+2. **Face Detection**
 
-### Contact Us
+   * Haar Cascade / CNN-based face detector (depending on configuration).
 
-For any questions or issues, please contact us at shivampilot2004@gmail.com
+3. **Emotion Recognition**
+
+   * Facial emotion classification model (via `fer` library).
+   * Output classes include:
+     `happy, sad, angry, neutral, fear, surprise, disgust`.
+
+4. **Recommendation Engine**
+
+   * Emotion → mood mapping.
+   * Mood → predefined music playlist mapping.
+
+5. **Output**
+
+   * Recommended music playlist displayed to the user.
+
+
+
+## Technologies Used
+
+* **Python**
+* **OpenCV** – video capture and face detection
+* **FER** – facial emotion recognition
+* **NumPy / Pandas** – data handling
+* **YouTube playlists** – music source
+
+
+
+## Experimental Setup
+
+* Input: Live webcam video stream.
+* Environment: Indoor lighting, frontal face orientation.
+* Inference: Real-time emotion prediction per frame.
+* Recommendation update: Triggered on dominant emotion over a short time window.
+
+
+
+## Results and Observations
+
+* The system successfully detects facial expressions in real time under controlled conditions.
+* Emotion prediction is reasonably stable for **clear expressions** such as happiness and sadness.
+* Neutral and mixed expressions show higher ambiguity.
+* Music recommendations align well with dominant emotional states in most cases.
+
+*(Note: Quantitative accuracy depends on the pre-trained FER model and was not retrained in this implementation.)*
+
+
+
+## Limitations
+
+* Emotion recognition accuracy drops under:
+
+  * Poor lighting
+  * Occlusions (mask, hand on face)
+  * Extreme head pose
+* Emotion-to-music mapping is **rule-based**, not learned.
+* No user feedback loop to adapt recommendations over time.
+* Emotion recognition model is pre-trained; no dataset-specific fine-tuning was performed.
+
+
+
+## Future Work
+
+* Replace rule-based recommendation with a **learning-based recommender**.
+* Incorporate **temporal emotion smoothing** using sequence models.
+* Add user feedback to refine recommendations.
+* Extend to multi-modal inputs (facial expression + audio + context).
+* Fine-tune emotion recognition model on a curated dataset.
+
+
+
+## Why This Project Matters
+
+This project demonstrates:
+
+* Practical application of **computer vision in human-centered systems**.
+* Integration of perception models with downstream decision logic.
+* Understanding of real-time constraints and system limitations.
+
+It serves as a foundation for more advanced research in:
+
+* Affective computing
+* Context-aware recommendation systems
+* Human–AI interaction
+
+
